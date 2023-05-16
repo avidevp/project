@@ -1,170 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta
+      content="initial-scale=0.7, maximum-scale=1.0, minimum-scale=0.5, width=device-width, user-scalable=yes"
+      name="viewport"
+    />
+    <script type="text/javascript" src="jquery.min.js"></script>
 
-
-<head>
-    <meta content="initial-scale=0.7, maximum-scale=1.0, minimum-scale=0.5, width=device-width, user-scalable=yes" name="viewport">
-    <script type="text/javascript" src='jquery.min.js'></script>
-
-    <script>
-        function turnOnBulb()
-        {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-		console.log(this.responseText,'a');
-        document.getElementById("info").innerHTML = 'On';
-      }
-    };
-    xmlhttp.open("GET",'./insert.php?state=1',true);
-    xmlhttp.send();
-        }
-
-        function turnOffBulb()
-        {
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-		console.log(this.responseText,'a');
-        document.getElementById("info").innerHTML = 'Off';
-      }
-    };
-    xmlhttp.open("GET",'./insert.php?state=0',true);
-    xmlhttp.send();
-        }
-
-    </script>
-
-    <script>
-        function data_request_timer(){
-            window.setInterval(get_data, 500); //timer for running get_data() function every 2 seconds 
-        }
-    
-        function get_data(){
-            console.log("fetching bulb data from server");
-    
-            $.get("./read_data2.php", 
-            function(data, status){
-                console.log(data);
-                if(data==="1")
-                {$('#onbulb').addClass('active');
-                document.getElementById("info").innerHTML = 'On';}
-
-                else
-                {$('#onbulb').removeClass('active');
-                document.getElementById("info").innerHTML = 'Off';}
-
-                
-              });
-    
-        }
-    
-    </script>
     <style>
-        body {
-            text-align: center;
-            font-family: verdana, Helvetica, Arial, sans-serif, gulim;
-            background: #C2CCD0;
-        }
-        
-        h2 {
-            font-size: 16px;
-            line-height: 25px;
-        }
-        
-        body.active {
-            background: #E2ECF1;
-        }
-        
-        #on {
-            opacity: 0;
-        }
-        
-        .active #on {
-            opacity: 1;
-        }
+      body {
+        text-align: center;
+        font-family: verdana, Helvetica, Arial, sans-serif, gulim;
+        background: #c2ccd0;
+      }
 
-        .light-bulb {
-            width: 250px;
-            height: 400px;
-            margin-top: 20px
-        }
-        
-        .container {
-            margin: auto;
-            width: 250px;
-        }
+      h2 {
+        font-size: 16px;
+        line-height: 25px;
+      }
 
+      body.active {
+        background: #e2ecf1;
+      }
 
-        .switches {
-            width: 150px;
-            height: 65px;
-            background-color: #38434A;
-            font-size: 24px;
-            margin: 0;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-            letter-spacing: 0.2px;
-            line-height: 65px;
-            text-align: center;
-            user-select: none;
-            transition: none;
-        }
-		
+      .bulb {
+        background-color: gray;
+        border-radius: 50%;
+        height: 200px;
+        width: 200px;
+        margin: 50px auto;
+        position: relative;
+      }
+
+      .light {
+        background-color: yellow;
+        border-radius: 50%;
+        height: 170px;
+        width: 170px;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        box-shadow: 0 0 50px 30px yellow;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .bulb.on .light {
+        opacity: 1;
+      }
+
+      .container {
+        margin: auto;
+        width: 250px;
+      }
+
+      .switches {
+        width: 150px;
+        height: 65px;
+        background-color: #38434a;
+        font-size: 24px;
+        margin: 0;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        letter-spacing: 0.2px;
+        line-height: 65px;
+        text-align: center;
+        user-select: none;
+        transition: none;
+      }
     </style>
-    
-</head>
-<body onload="data_request_timer()">
-    <div class="container" >
-        <div id="onbulb"class="light-bulb active" >
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 275.3 413.3" enable-background="new 0 0 275.3 413.3" xml:space="preserve">
-                <g>
-                    <path fill="#E2ECF1" d="M137.7,13.7C67.2,13.7,10,70.9,10,141.4c0,58.3,72.8,118.2,79.9,162.3h47.8h47.8
-		c7.1-44,79.9-103.9,79.9-162.3C265.3,70.9,208.2,13.7,137.7,13.7z" />
-                </g>
-                <g id="on">
-                    <path fill="#FFDB55" d="M137.7,13.7C67.2,13.7,10,70.9,10,141.4c0,58.3,72.8,118.2,79.9,162.3h47.8h47.8
-		c7.1-44,79.9-103.9,79.9-162.3C265.3,70.9,208.2,13.7,137.7,13.7z" />
-
-                </g>
-
-                <g>
-                    <path fill="#F1F2F2" stroke="#38434A" stroke-width="19.1022" stroke-miterlimit="10" d="M168.5,375.5h-61.7c-8.9,0-16-7.2-16-16
-		v-55.8h93.8v55.8C184.6,368.3,177.4,375.5,168.5,375.5z" />
-                    <path fill="#F1F2F2" stroke="#38434A" stroke-width="19.1022" stroke-miterlimit="10" d="M151.2,401.5h-27.1c-3.9,0-7-3.2-7-7v-19
-		h41.1v19C158.2,398.4,155.1,401.5,151.2,401.5z" />
-                    <line fill="none" stroke="#38434A" stroke-width="19.1022" stroke-miterlimit="10" x1="184.6" y1="339.6" x2="90.8" y2="339.6" />
-                    <path fill="none" stroke="#38434A" stroke-width="19.1022" stroke-miterlimit="10" d="M137.7,13.7C67.2,13.7,10,70.9,10,141.4
-		c0,58.3,72.8,118.2,79.9,162.3h47.8h47.8c7.1-44,79.9-103.9,79.9-162.3C265.3,70.9,208.2,13.7,137.7,13.7z" />
-                </g>
-                <g>
-                    <path fill="#FFDB55" stroke="#FFFFFF" stroke-width="21.0124" stroke-linecap="round" stroke-miterlimit="10" d="M207.1,89.5
-		c-12.3-16.1-28.4-29.1-46.9-37.8" />
-                    <path fill="#FFDB55" stroke="#FFFFFF" stroke-width="21.0124" stroke-linecap="round" stroke-miterlimit="10" d="M225,121.4
-		c-0.8-2.2-1.8-4.4-2.7-6.5" />
-                </g>
-            </svg>
-        </div>
-        <form onsubmit="turnOnBulb()" name="turnOn">
-            <button type="submit"  class="switches" >
-                On
-        </button>
-        </form>
-        <br>
-        <form onsubmit="turnOffBulb()" name="turnOff">
-            <button type="submit"  class="switches" >
-                Off
-        </button>
-        </form>
-        
-    <!-- <button  class="switches"   >
-        <a href="./insert.php?state=0" target="_blank">Off</a>
-</button> -->
+  </head>
+  <body>
+    <div class="bulb">
+      <div class="light"></div>
     </div>
-    
-    <br>
-    <div style='border:0px solid blue; padding:0%;'>
-        <div id='info'></div>
-    </div>
-</body>
+    <button id="on">On</button>
+    <button id="off">Off</button>
+
+    <script>
+      // Send a request to the API to get the initial state of the bulb
+      // and update the bulb accordingly
+      // You will need to replace the URL with the actual API endpoint
+      fetch("http://127.0.0.1/water-tank/bulb/read_data2.php")
+        .then((response) => response.text())
+        .then((data) => {
+            console.log(data);
+          const bulb = document.querySelector(".bulb");
+          if (data == "<div>1</div>") {
+            bulb.classList.add("on");
+          } else {
+            bulb.classList.remove("on");
+          }
+        })
+        .catch((error) => console.error(error));
+
+      const onButton = document.getElementById("on");
+      const offButton = document.getElementById("off");
+
+      onButton.addEventListener("click", () => {
+        // Send a request to the API to turn the bulb on
+        // You will need to replace the URL with the actual API endpoint
+        const formData = new URLSearchParams();
+        formData.append("state", "1");
+        fetch("http://127.0.0.1/water-tank/bulb/insert.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formData.toString(),
+        })
+          .then(() => {
+            const bulb = document.querySelector(".bulb");
+            bulb.classList.add("on");
+          })
+          .catch((error) => console.error(error));
+      });
+
+      offButton.addEventListener("click", () => {
+        // Send a request to the API to turn the bulb off
+        // You will need to replace the URL with the actual API endpoint
+        const formData = new URLSearchParams();
+        formData.append("state", "0");
+        fetch("http://127.0.0.1/water-tank/bulb/insert.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formData.toString(),
+        })
+          .then(() => {
+            const bulb = document.querySelector(".bulb");
+            bulb.classList.remove("on");
+          })
+          .catch((error) => console.error(error));
+      });
+    </script>
+  </body>
+</html>

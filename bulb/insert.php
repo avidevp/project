@@ -6,7 +6,7 @@ date_default_timezone_set("Asia/Kolkata");
 
 include_once '../util.php';
 
-$val=$_GET["state"];
+$val=$_REQUEST["state"];
 
 //$val="10";
 insert_in_db2($val);
@@ -37,7 +37,7 @@ function insert_in_db2($val){
          }
     
         if ( $result ) {
-            echo" <p>successfully inserted >>>> </p> ";
+            echo "$val";
             //return 1;
       }
  
