@@ -69,9 +69,7 @@
         // Get the fan element
         var fan = document.getElementById("fan");
         // Remove any existing speed class
-        fan.classList.remove("low", "medium", "high");
         // Add the new speed class
-        fan.classList.add(speed);
         // Call the API to update the database (replace URL with your API endpoint)
         var fanState;
         if (speed == "low") fanState = "3";
