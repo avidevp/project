@@ -20,7 +20,7 @@ $water_level= $height-$x_cm;
 $water_level= round($water_level,1);
 
 $volume=calculate_volume($dia,$water_level);
-
+$volume=max(0,$volume);
 $str="&value=".$volume;
 
 echo"$str";

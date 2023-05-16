@@ -1,5 +1,7 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access-control-allow-origin, content-type");
+header("Content-Type: application/x-www-form-urlencoded; charset=UTF-8");
 //change the time zone as per your country
 date_default_timezone_set("Asia/Kolkata");
 

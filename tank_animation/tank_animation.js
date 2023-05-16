@@ -11,7 +11,7 @@ FusionCharts.ready(function(){
             "caption": "",
             "subcaption": "",
             "lowerLimit": "0",
-            "upperLimit": "800",
+            "upperLimit": "10",
             "lowerLimitDisplay": "Empty",
             "upperLimitDisplay": "Full",
             "numberSuffix": " ltrs",

@@ -6,7 +6,12 @@
       name="viewport"
     />
     <script type="text/javascript" src="jquery.min.js"></script>
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
     <style>
       body {
         text-align: center;
@@ -70,71 +75,133 @@
         transition: none;
       }
     </style>
+     <script>
+      function data_request_timer() {
+        window.setInterval(get_data, 5000); //timer for running get_data() function every 2 seconds
+      }
+
+      function get_data() {
+        console.log("fetching data from server");
+
+        $.get("read_data2.php", function (data, status) {
+          const bulb = document.querySelector(".bulb");
+
+          if(data=="0")
+          {
+            bulb.classList.remove("on");
+          }
+          else
+          {
+            bulb.classList.add("on");
+          }
+        });
+      }
+    </script>
   </head>
-  <body>
+  <body onload="data_request_timer()">
     <div class="bulb">
       <div class="light"></div>
     </div>
-    <button id="on">On</button>
-    <button id="off">Off</button>
+    <button type="button" class="btn btn-light" id="on">On</button>
+    <button type="button" class="btn btn-dark" id="off">Off</button>
 
     <script>
-      // Send a request to the API to get the initial state of the bulb
-      // and update the bulb accordingly
-      // You will need to replace the URL with the actual API endpoint
-      fetch("http://127.0.0.1/water-tank/bulb/read_data2.php")
-        .then((response) => response.text())
-        .then((data) => {
-            console.log(data);
-          const bulb = document.querySelector(".bulb");
-          if (data == "<div>1</div>") {
+      var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              console.log(this.responseText, "a");
+              const bulb = document.querySelector(".bulb");
+              var data = this.responseText;
+          if (data == "1") {
             bulb.classList.add("on");
           } else {
             bulb.classList.remove("on");
           }
-        })
-        .catch((error) => console.error(error));
+            }
+          };
+          xmlhttp.open("GET", "./read_data2.php", true);
+          xmlhttp.send();
+      // Send a request to the API to get the initial state of the bulb
+      // and update the bulb accordingly
+      // fetch("http://127.0.0.1/water-tank/bulb/read_data2.php")
+      //   .then((response) => response.text())
+      //   .then((data) => {
+      //     console.log(data);
+      //     const bulb = document.querySelector(".bulb");
+      //     if (data == "1") {
+      //       bulb.classList.add("on");
+      //     } else {
+      //       bulb.classList.remove("on");
+      //     }
+      //   })
+      //   .catch((error) => console.error(error));
 
       const onButton = document.getElementById("on");
       const offButton = document.getElementById("off");
 
       onButton.addEventListener("click", () => {
         // Send a request to the API to turn the bulb on
-        // You will need to replace the URL with the actual API endpoint
-        const formData = new URLSearchParams();
-        formData.append("state", "1");
-        fetch("http://127.0.0.1/water-tank/bulb/insert.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: formData.toString(),
-        })
-          .then(() => {
-            const bulb = document.querySelector(".bulb");
+        var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              const bulb = document.querySelector(".bulb");
             bulb.classList.add("on");
-          })
-          .catch((error) => console.error(error));
-      });
+            }
+          };
+          xmlhttp.open("POST", "./insert.php", true);
+          xmlhttp.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+          );
+          xmlhttp.send("bulbState=1");
+        })
+      //   const formData = new URLSearchParams();
+      //   formData.append("bulbState", "1");
+      //   fetch("http://127.0.0.1/water-tank/bulb/insert.php", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/x-www-form-urlencoded",
+      //     },
+      //     body: formData.toString(),
+      //   })
+      //     .then(() => {
+      //       const bulb = document.querySelector(".bulb");
+      //       bulb.classList.add("on");
+      //     })
+      //     .catch((error) => console.error(error));
+      // });
 
       offButton.addEventListener("click", () => {
-        // Send a request to the API to turn the bulb off
-        // You will need to replace the URL with the actual API endpoint
-        const formData = new URLSearchParams();
-        formData.append("state", "0");
-        fetch("http://127.0.0.1/water-tank/bulb/insert.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: formData.toString(),
-        })
-          .then(() => {
-            const bulb = document.querySelector(".bulb");
+        var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              const bulb = document.querySelector(".bulb");
             bulb.classList.remove("on");
-          })
-          .catch((error) => console.error(error));
-      });
+            }
+          };
+          xmlhttp.open("POST", "./insert.php", true);
+          xmlhttp.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+          );
+          xmlhttp.send("bulbState=0");
+        })
+        // Send a request to the API to turn the bulb off
+        // const formData = new URLSearchParams();
+        // formData.append("bulbState", "0");
+        // fetch("http://127.0.0.1/water-tank/bulb/insert.php", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/x-www-form-urlencoded",
+        //   },
+        //   body: formData.toString(),
+        // })
+        //   .then(() => {
+        //     const bulb = document.querySelector(".bulb");
+        //     bulb.classList.remove("on");
+        //   })
+        //   .catch((error) => console.error(error));
+      
     </script>
   </body>
 </html>

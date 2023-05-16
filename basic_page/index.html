@@ -1,70 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-
-<head>
-
-<script type="text/javascript" src='jquery.min.js'></script>
-<script>
-	function addWaterLevel()
-	{
-		var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-		console.log(this.responseText,'a');
-        document.getElementById("info").innerHTML = this.responseText;
+  <head>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script>
+      function addWaterLevel() {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("info").innerHTML = this.responseText;
+          }
+        };
+        xmlhttp.open("POST", "../insert_data.php", true);
+        xmlhttp.setRequestHeader(
+          "Content-type",
+          "application/x-www-form-urlencoded"
+        );
+        var rand = Math.random().toString();
+        xmlhttp.send("dist=" + rand);
       }
-    };
-    xmlhttp.open("POST",'../insert_data.php',true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xmlhttp.send("dist=20");
-	}
-</script>
+    </script>
 
-<script>
-	function data_request_timer(){
-		window.setInterval(get_data, 2000); //timer for running get_data() function every 2 seconds 
-	}
+    <script>
+      function data_request_timer() {
+        window.setInterval(get_data, 5000); //timer for running get_data() function every 2 seconds
+      }
 
-	function get_data(){
-		console.log("fetching data from server");
+      function get_data() {
+        console.log("fetching data from server");
 
-		$.get("read_data1.php", 
-		function(data, status){
-	    	document.getElementById("info").innerHTML = data;
-	  	});
+        $.get("read_data1.php", function (data, status) {
+          document.getElementById("info").innerHTML = data;
+        });
+      }
+    </script>
 
-	}
-
- 
-
-
-</script>
-<link
+    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
       crossorigin="anonymous"
-/>
-</head>
+    />
+  </head>
 
-<body onload="data_request_timer()">
+  <body onload="data_request_timer()">
+    <!--  This is where the data is displayed -->
+    <div style="border: 0px solid blue; padding: 0%">
+      <div>Something will be inserted</div>
+    </div>
 
-<!--  This is where the data is displayed -->
-<div style='border:0px solid blue; padding:0%;'>
-    <div >Something will be inserted</div>
-</div>
-
-
-<!--  Dummy value insertion link -->
-<form class="dontsubmit" onsubmit="addWaterLevel()">
-	<button type="submit" name="val" class="btn btn-success" >
-	 Insert Dummy Value
-	</button>
-</form>
-<div style='border:0px solid blue; padding:0%;'>
-    <div id='info'></div>
-</div>
-
-</body>
+    <!--  Dummy value insertion link -->
+    <form class="dontsubmit" onsubmit="addWaterLevel()">
+      <button type="submit" name="val" class="btn btn-success">
+        Insert Dummy Value
+      </button>
+    </form>
+    <div style="border: 0px solid blue; padding: 0%">
+      <div id="info"></div>
+    </div>
+  </body>
 </html>

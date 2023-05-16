@@ -8,7 +8,7 @@ date_default_timezone_set("Asia/Kolkata");
 
 include_once '../util.php';
 
-$val=$_REQUEST["bulbState"];
+$val=$_REQUEST["fanState"];
 
 //$val="10";
 insert_in_db2($val);
@@ -27,7 +27,7 @@ function insert_in_db2($val){
     
     
 
-    $sql="UPDATE `state` SET `bulbLevel` = '$val' WHERE 1";
+    $sql="UPDATE `state` SET `fanLevel` = '$val' WHERE 1";
    
     $result = mysqli_query($connection,$sql);
     

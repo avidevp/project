@@ -5,7 +5,7 @@ header("Content-Type: application/x-www-form-urlencoded; charset=UTF-8");
 ini_set('display_errors', '1');
 
 //----------database access----------------------------
-include_once '../util.php';
+include_once './util.php';
 //-----------------------------------------------------
 
 $con=create_db_connection4();
@@ -16,6 +16,7 @@ $row=db_select_row($con,$sql);
 
 close_db_connection($con);
 
-$val=floatval($row['bulbLevel']); 
-echo "$val";
+$val1=floatval($row['fanLevel']); 
+$val2=floatval($row['bulbLevel']);
+echo "Bulb:$val2, Fan:$val1";
 ?>

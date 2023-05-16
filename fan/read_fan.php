@@ -16,6 +16,6 @@ $row=db_select_row($con,$sql);
 
 close_db_connection($con);
 
-$val=floatval($row['bulbLevel']); 
+$val=floatval($row['fanLevel']); 
 echo "$val";
 ?>

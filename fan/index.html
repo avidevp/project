@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fan Control</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <script type="text/javascript" src="../bulb/jquery.min.js"></script>
+      <style>
+        body {
+        text-align: center;
+        font-family: verdana, Helvetica, Arial, sans-serif, gulim;
+        background: #c2ccd0;
+      }
+      </style>
+    <script>
+      // Function to turn the fan on or off
+      function toggleFan() {
+        // Get the fan element
+        var fan = document.getElementById("fan");
+        // Get the on/off button
+        var button = document.getElementById("toggle-button");
+        // Check if the fan is currently on
+        var image = document.querySelector("#image");
+        if (button.innerHTML == "Turn Off") {
+          // Turn the fan off
+          var image = document.querySelector("#image");
+          image.src = "./stopped.jpg";
+          button.innerHTML = "Turn On";
+          // Call the API to update the database
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              console.log(this.responseText, "a");
+            }
+          };
+          xmlhttp.open("POST", "./insert.php", true);
+          xmlhttp.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+          );
+          xmlhttp.send("fanState=0");
+        } else {
+          // Turn the fan on
+          var image = document.querySelector("#image");
+
+          image.src = "./rotating.gif";
+          button.innerHTML = "Turn Off";
+          // Call the API to update the database
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              console.log(this.responseText, "a");
+            }
+          };
+          xmlhttp.open("POST", "./insert.php", true);
+          xmlhttp.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+          );
+          xmlhttp.send("fanState=1");
+        }
+      }
+      // Function to control fan speed
+      function setFanSpeed(speed) {
+        // Get the fan element
+        var fan = document.getElementById("fan");
+        // Remove any existing speed class
+        fan.classList.remove("low", "medium", "high");
+        // Add the new speed class
+        fan.classList.add(speed);
+        // Call the API to update the database (replace URL with your API endpoint)
+        var fanState;
+        if (speed == "low") fanState = "3";
+        else if (speed == "medium") fanState = "2";
+        else fanState = "1";
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText, "a");
+          }
+        };
+        xmlhttp.open("POST", "./insert.php", true);
+        xmlhttp.setRequestHeader(
+          "Content-type",
+          "application/x-www-form-urlencoded"
+        );
+        xmlhttp.send("fanState=" + fanState.toString());
+      }
+    </script>
+    <script>
+      function initialState() {
+        var fan = document.getElementById("fan");
+        var button = document.getElementById("toggle-button");
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            var content = this.responseText;
+            if (content == "0") {
+              button.innerHTML = "Turn On";
+              var image = document.querySelector("#image");
+              image.src = "./stopped.jpg";
+            } else {
+              button.innerHTML = "Turn Off";
+              var image = document.querySelector("#image");
+
+              image.src = "./rotating.gif";
+            }
+          }
+        };
+        xmlhttp.open("GET", "./read_fan.php", true);
+        xmlhttp.send();
+      }
+      function data_request_timer() {
+        window.setInterval(get_data, 5000); //timer for running get_data() function every 2 seconds
+      }
+
+      function get_data() {
+
+        $.get("read_fan.php", function (data, status) {
+          var button = document.getElementById("toggle-button");
+
+          if (data == "0") {
+            button.innerHTML = "Turn On";
+            var image = document.querySelector("#image");
+            image.src = "./stopped.jpg";
+          } else {
+            button.innerHTML = "Turn Off";
+            var image = document.querySelector("#image");
+
+            image.src = "./rotating.gif";
+          }
+        });
+
+        
+      }
+      function onLoad()
+        {
+          initialState();
+          data_request_timer();
+        }
+    </script>
+  </head>
+  <body style="text-align: center" onload="onLoad()">
+    <img
+      src="./rotating.gif"
+      alt="rotating fan"
+      width="100%"
+      height="200px"
+      id="image"
+    />
+    <button
+      id="toggle-button"
+      onclick="toggleFan()"
+      type="button"
+      class="btn btn-success"
+    >
+      Turn On
+    </button>
+    <br />
+    <br />
+    <br />
+    <button onclick="setFanSpeed('low')" type="button" class="btn btn-warning">
+      Low
+    </button>
+    <button
+      onclick="setFanSpeed('medium')"
+      type="button"
+      class="btn btn-warning"
+    >
+      Medium
+    </button>
+    <button onclick="setFanSpeed('high')" type="button" class="btn btn-warning">
+      High
+    </button>
+  </body>
+</html>

@@ -1,4 +1,9 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access-control-allow-origin, content-type");
+header("Content-Type: application/x-www-form-urlencoded; charset=UTF-8");
+
+
 
 global $db_server, $db_username, $db_pwd,$db_name;
  
@@ -10,8 +15,8 @@ $db_name='water_level';
 
 //------Tank Dimensions-------------------------
 global $dia, $height;
-$dia=104; //cm (Diameter of tank)
-$height=116; //cm (height of tank)
+$dia=9; //cm (Diameter of tank)
+$height=23; //cm (height of tank)
 
 
 //---------------utility functions-------------------------------------------------------
@@ -62,6 +67,26 @@ function create_db_connection2(){
 	
 	
 	if (($connection =mysqli_connect($db_server, $db_username, $db_pwd, 'bulb_state'))===FALSE)
+ 	die("<h3 style='color:red'>could not connect to the database server</h3>");
+
+ 	return $connection;
+}
+
+function create_db_connection3(){
+	global $db_server, $db_username, $db_pwd,$db_name;
+	
+	
+	if (($connection =mysqli_connect($db_server, $db_username, $db_pwd, 'temperature'))===FALSE)
+ 	die("<h3 style='color:red'>could not connect to the database server</h3>");
+
+ 	return $connection;
+}
+
+function create_db_connection4(){
+	global $db_server, $db_username, $db_pwd,$db_name;
+	
+	
+	if (($connection =mysqli_connect($db_server, $db_username, $db_pwd, 'bulbfan'))===FALSE)
  	die("<h3 style='color:red'>could not connect to the database server</h3>");
 
  	return $connection;
